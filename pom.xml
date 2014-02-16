@@ -41,6 +41,7 @@
   </dependencies>
   <!-- How we will compile the plugin -->
   <build>
+    <finalName>${project.name}</finalName>
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
@@ -50,7 +51,7 @@
     </extensions>
     <defaultGoal>install</defaultGoal>
     <!-- Where our source directory is -->
-    <sourceDirectory>${basedir}/src/mc</sourceDirectory>
+    <sourceDirectory>${basedir}/src/java</sourceDirectory>
     <!-- Include all the resources we need -->
     <resources>
       <resource>
