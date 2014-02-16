@@ -33,7 +33,7 @@
     <dependency>
       <groupId>mc.alk</groupId>
       <artifactId>VirtualPlayers</artifactId>
-      <version>[1.5.5,]</version>
+      <version>1.5.5</version>
       <scope>provided</scope>
     </dependency>
     <!-- unknown plugins that I had to add to the repo -->
