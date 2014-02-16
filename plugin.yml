@@ -1,0 +1,19 @@
+name: BattleScoreboardAPI
+
+main: mc.alk.scoreboardapi.ScoreboardAPI
+
+version: 1.0.2
+
+author: Alkarin
+description: "No herping system"
+
+commands:
+    team:
+        aliases: [arenateam]
+        description: Team commands
+        usage: /team <create|join|leave|decline> [arguments]
+
+commands:
+  scoreboardapi: 
+    aliases: [sc]
+    usage: scoreboard api
