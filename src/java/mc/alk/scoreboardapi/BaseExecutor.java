@@ -1,5 +1,16 @@
 package mc.alk.scoreboardapi;
 
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+
 import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,19 +24,6 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import mc.alk.virtualPlayer.VirtualPlayers;
-
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 
 public abstract class BaseExecutor implements CommandExecutor{
 	public static final String version = "2.0.1";
@@ -463,9 +461,9 @@ public abstract class BaseExecutor implements CommandExecutor{
 
 	private Player verifyPlayer(String name) throws IllegalArgumentException {
 		Player p = findPlayer(name);
-		if (p == null){
-			p = VirtualPlayers.getPlayer(name);
-		}
+//		if (p == null){
+//			p = VirtualPlayers.getPlayer(name);
+//		}
 		if (p == null || !p.isOnline())
 			throw new IllegalArgumentException(name+" is not online ");
 		return p;
