@@ -1,12 +1,11 @@
 package mc.alk.scoreboardapi.scoreboard;
 
+import mc.alk.scoreboardapi.api.STeam;
+import org.bukkit.OfflinePlayer;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import mc.alk.scoreboardapi.api.STeam;
-
-import org.bukkit.OfflinePlayer;
 
 public class SAPITeam extends SAPIEntry implements STeam{
 	protected SAPIScoreboard board;
@@ -52,6 +51,11 @@ public class SAPITeam extends SAPIEntry implements STeam{
 	public String getSuffix() {
 		return null;
 	}
+
+    @Override
+    public int size() {
+        return 0;
+    }
 
 
 }

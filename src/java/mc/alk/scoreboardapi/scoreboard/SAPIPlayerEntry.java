@@ -84,4 +84,5 @@ public class SAPIPlayerEntry implements SEntry{
                     displayName + (displayNameSuffix != null ? displayNameSuffix : "");
         }
     }
+
 }

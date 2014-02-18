@@ -81,4 +81,8 @@ public class BukkitTeam extends SAPITeam {
 		return team.getSuffix();
 	}
 
+    @Override
+    public int size() {
+        return team.getSize();
+    }
 }

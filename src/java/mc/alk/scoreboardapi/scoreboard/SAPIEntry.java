@@ -83,4 +83,7 @@ public class SAPIEntry implements SEntry{
         }
     }
 
+    public String toString() {
+        return "[SAPIEntry " + this.getID() + " : " + this.getDisplayName() + "]";
+    }
 }
