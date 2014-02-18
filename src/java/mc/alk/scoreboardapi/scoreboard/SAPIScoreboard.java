@@ -99,8 +99,8 @@ public class SAPIScoreboard implements SScoreboard{
 		return sb.toString();
 	}
 
-	public void createEntry(OfflinePlayer p) {
-		createEntry(p,p.getName());
+	public SEntry createEntry(OfflinePlayer p) {
+		return createEntry(p,p.getName());
 	}
 
 	public SEntry createEntry(OfflinePlayer p, String displayName) {

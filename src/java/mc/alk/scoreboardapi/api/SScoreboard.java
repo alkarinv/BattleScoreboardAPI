@@ -24,7 +24,7 @@ public interface SScoreboard {
 
 	public String getPrintString() ;
 
-	public void createEntry(OfflinePlayer p) ;
+	public SEntry createEntry(OfflinePlayer p) ;
 
 	public SEntry createEntry(OfflinePlayer p, String displayName) ;
 
