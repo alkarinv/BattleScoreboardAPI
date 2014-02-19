@@ -1,7 +1,7 @@
 package mc.alk.scoreboardapi.scoreboard;
 
+import mc.alk.scoreboardapi.api.SAPI;
 import mc.alk.scoreboardapi.api.SEntry;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -33,6 +33,11 @@ public class SAPIEntry implements SEntry{
     @Override
     public String getDisplayName(){
         return combinedDisplayName;
+    }
+
+    @Override
+    public String getBaseDisplayName(){
+        return displayName;
     }
 
     @Override
@@ -72,11 +77,11 @@ public class SAPIEntry implements SEntry{
     private void _setDisplayName(){
         if ((displayNamePrefix != null ? displayNamePrefix.length() : 0) +
                 displayName.length() +
-                (displayNameSuffix != null ? displayNameSuffix.length() : 0) > 15) {
+                (displayNameSuffix != null ? displayNameSuffix.length() : 0) > SAPI.MAX_NAMESIZE) {
             int size = (displayNamePrefix != null ? displayNamePrefix.length() : 0) +
                     (displayNameSuffix != null ? displayNameSuffix.length() : 0);
             this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
-                    displayName.substring(0, 16 - size) + (displayNameSuffix != null ? displayNameSuffix : "");
+                    displayName.substring(0, SAPI.MAX_NAMESIZE - size) + (displayNameSuffix != null ? displayNameSuffix : "");
         } else {
             this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
                     displayName + (displayNameSuffix != null ? displayNameSuffix : "");

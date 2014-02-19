@@ -31,9 +31,9 @@ public class BScoreboard extends SAPIScoreboard{
 	}
 
 	@Override
-	public SAPIObjective registerNewObjective(String objectiveName, String criteria, String displayName,
+	public SAPIObjective registerNewObjective(String id, String displayName, String criteria,
 			SAPIDisplaySlot slot) {
-		BObjective o =  new BObjective(this,objectiveName,criteria);
+		BObjective o =  new BObjective(this,id, displayName,criteria);
 		o.setDisplayName(displayName);
 		o.setDisplaySlot(slot);
 		registerNewObjective(o);
@@ -65,6 +65,7 @@ public class BScoreboard extends SAPIScoreboard{
         HashMap<Objective, Integer> scores;
         Team team;
     }
+
     private BoardUpdate clearBoard(SEntry e){
         HashMap<Objective, Integer> oldScores = new HashMap<Objective, Integer>();
         Set<Score> scores = board.getScores(e.getOfflinePlayer());
@@ -144,5 +145,4 @@ public class BScoreboard extends SAPIScoreboard{
 			objective.addEntry(entry, 0);
 		}
 	}
-
 }

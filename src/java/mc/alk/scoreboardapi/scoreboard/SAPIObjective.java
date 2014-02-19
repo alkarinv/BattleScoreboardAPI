@@ -10,18 +10,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SAPIObjective implements SObjective{
-	protected SScoreboard scoreboard =null;
-
-	protected final String name;
+	protected final String id;
 	protected String criteria;
 	protected String displayName;
     protected String displayNameSuffix="";
     protected String displayNamePrefix="";
-	protected SAPIDisplaySlot slot = SAPIDisplaySlot.NONE;
+	protected SAPIDisplaySlot slot;
+
+    protected SScoreboard scoreboard;
 
 	/// Used for Team support
-	protected boolean displayPlayers = true;
-	protected boolean displayTeams = true;
+	protected boolean displayPlayers;
+	protected boolean displayTeams;
 
 	// 1-1000 scale, not strictly enforced
 	// the lower priorities will not be preempted when set
@@ -29,15 +29,19 @@ public class SAPIObjective implements SObjective{
 
 	protected Set<SEntry> entries = new HashSet<SEntry>();
 
-	public SAPIObjective(String name, String criteria) {
-		this(name,criteria,50);
+	public SAPIObjective(String id, String displayName, String criteria) {
+		this(id, displayName,criteria,50);
 	}
 
-	public SAPIObjective(String name, String criteria, int priority) {
-		this.name = colorChat(name);
-		this.criteria = colorChat(criteria);
-		this.priority = priority;
-	}
+	public SAPIObjective(String id, String displayName, String criteria, int priority) {
+        this.id = id;
+        this.criteria = colorChat(criteria);
+        this.priority = priority;
+        setDisplayName(displayName);
+        displayPlayers = true;
+        displayTeams = true;
+        slot = SAPIDisplaySlot.NONE;
+    }
 
 	public SScoreboard getScoreboard() {
 		return scoreboard;
@@ -47,16 +51,20 @@ public class SAPIObjective implements SObjective{
 		return priority;
 	}
 
-	public String getName(){
-		return name;
+	public String getID(){
+		return id;
 	}
 
 	public String getCriteria() {
 		return criteria;
 	}
 
+    public String getFullDisplayName() {
+        return displayName;
+    }
+
 	public String getDisplayName(){
-		return displayName == null ? name : displayName;
+		return displayName == null ? id : displayName;
 	}
 
 	public void setDisplayName(String displayName){

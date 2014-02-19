@@ -28,7 +28,7 @@ public class ScoreboardAPIExecutor extends BaseExecutor {
 			String criteria, String displayName) {
 		SObjective o = sh.bs.getObjective(objectiveName);
 		if (o != null){
-			return sendMessage(sender,"&cobjective " + o.getName()+" already exists");
+			return sendMessage(sender,"&cobjective " + o.getID()+" already exists");
 		}
 
 		if (displayName.contains("\\\""))

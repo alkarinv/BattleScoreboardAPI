@@ -16,10 +16,16 @@ public interface SEntry {
 	public String getID() ;
 
     /**
-     * Get the displayName
-     * @return String
+     * Get the prefix+displayName+suffix
+     * @return return the full display name (prefix+displayName+suffix)
      */
 	public String getDisplayName();
+
+    /**
+     * Get the base displayName
+     * @return the base displayName
+     */
+    public String getBaseDisplayName();
 
     /**
      * Set the displayName

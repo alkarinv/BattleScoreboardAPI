@@ -19,16 +19,16 @@ import java.util.Set;
 public class BObjective extends SAPIObjective{
 	Objective o;
 
-	public BObjective(SScoreboard board, String name, String criteria) {
-		this(board,name,criteria,50);
+	public BObjective(SScoreboard board, String id,String displayName, String criteria) {
+		this(board,id,displayName,criteria,50);
 	}
 
-	public BObjective(String name, String criteria, int priority) {
-		this(null,name, criteria,priority);
+	public BObjective(String id, String displayName, String criteria, int priority) {
+		this(null,id, displayName, criteria,priority);
 	}
 
-	public BObjective(SScoreboard board, String name, String criteria, int priority) {
-		super(name, criteria,priority);
+	public BObjective(SScoreboard board, String id,String displayName, String criteria, int priority) {
+		super(id,displayName, criteria,priority);
 		if (board != null)
 			setScoreBoard(board);
 	}
@@ -71,9 +71,9 @@ public class BObjective extends SAPIObjective{
 			throw new IllegalStateException("To use BukkitObjectives you must use BukkitScoreboards");
 		super.setScoreBoard(board);
 
-		o = ((BScoreboard)board).board.getObjective(name);
+		o = ((BScoreboard)board).board.getObjective(id);
 		if (o == null)
-			o = ((BScoreboard)board).board.registerNewObjective(name,criteria);
+			o = ((BScoreboard)board).board.registerNewObjective(id,criteria);
 		setDisplayName(getDisplayName());
 	}
 
@@ -167,11 +167,11 @@ public class BObjective extends SAPIObjective{
 		}
 	}
 
-	@SuppressWarnings("StringConcatenationInsideStringBufferAppend")
     @Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		sb.append("&6 --- "+this.getName() +" : "+this.getDisplayName()+"&4 : " + this.getPriority()+"\n");
+		sb.append("&6 --- ").append(this.id).append(" : ").append(this.getDisplayName()).
+                append("&4 : ").append(this.getPriority()).append("\n");
 		if (scoreboard == null){
 			sb.append("&4 Bukkit scoreboard still not set!!");
 			return sb.toString();
@@ -195,15 +195,18 @@ public class BObjective extends SAPIObjective{
 					if (score.getScore() != 0){
 						if (e instanceof BukkitTeam){
 							BukkitTeam bt = ((BukkitTeam)e);
-							sb.append("&e " + e.getID() +" : " + e.getDisplayName() +" = "+ score.getScore() +"  &eteamMembers=\n");
+							sb.append("&e ").append(e.getID()).append(" : ").append(e.getDisplayName()).append(" = ").
+                                    append(score.getScore()).append("  &eteamMembers=\n");
 							for (OfflinePlayer p : bt.getPlayers()){
 								SEntry ep = this.getScoreboard().getOrCreateEntry(p);
 								String c = this.contains(ep) ? "&e" : "&8";
-								sb.append(
-										"  "+c+"- &f" +bt.getPrefix()+p.getName()+bt.getSuffix()+c+" = " + o.getScore(p).getScore()+"\n");
+								sb.append("  ").append(c).append("- &f").append(bt.getPrefix()).append(p.getName()).
+                                        append(bt.getSuffix()).append(c).append(" = ").
+                                        append(o.getScore(p).getScore()).append("\n");
 							}
 						} else {
-							sb.append("&6 " + e.getID() +" : " + e.getDisplayName() +" = "+ score.getScore()+"\n");
+							sb.append("&6 ").append(e.getID()).append(" : ").append(e.getDisplayName()).append(" = ").
+                                    append(score.getScore()).append("\n");
 						}
 					} else {
 						zeroes.add(e);
@@ -214,7 +217,8 @@ public class BObjective extends SAPIObjective{
 		if (!skipped.isEmpty()){
 			sb.append(" &cSkipped Entries: ");
 			for (SEntry e: skipped){
-				sb.append("&6 "+e.getID()+":"+e.getDisplayName()+"&e,");}
+				sb.append("&6 ").append(e.getID()).append(":").
+                        append(e.getDisplayName()).append("&e,");}
 			sb.append("\n");
 		}
 		if (!zeroes.isEmpty()){

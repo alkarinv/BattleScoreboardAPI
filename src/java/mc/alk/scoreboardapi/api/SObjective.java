@@ -43,7 +43,7 @@ public interface SObjective {
 
 	public SAPIDisplaySlot getDisplaySlot();
 
-	public String getName();
+	public String getID();
 
 
 	public int getPriority();

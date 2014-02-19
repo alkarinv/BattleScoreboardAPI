@@ -38,6 +38,9 @@ public class SAPIPlayerEntry implements SEntry{
     }
 
     @Override
+    public String getBaseDisplayName() {return displayName;}
+
+    @Override
     public void setDisplayName(String displayName) {
         this.displayName = SAPIObjective.colorChat(displayName);
         _setDisplayName();

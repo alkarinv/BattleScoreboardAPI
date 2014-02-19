@@ -1,15 +1,14 @@
 package mc.alk.scoreboardapi.scoreboard;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-
 import mc.alk.scoreboardapi.api.SEntry;
 import mc.alk.scoreboardapi.api.STeam;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class Handler {
 	static int ids = 0;
@@ -74,7 +73,7 @@ public class Handler {
 	}
 
 	public boolean contains(String id) {
-		return (!idmap.containsKey(id)) ? false : row.containsKey(idmap.get(id));
+		return idmap.containsKey(id) && row.containsKey(idmap.get(id));
 	}
 
 	public SEntry getEntry(OfflinePlayer p) {

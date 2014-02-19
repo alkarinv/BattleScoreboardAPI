@@ -29,7 +29,7 @@ public class SAPIScoreboard implements SScoreboard{
 	}
 
 	public SObjective registerNewObjective(SObjective obj) {
-		objectives.put(obj.getName().toUpperCase(), obj);
+		objectives.put(obj.getID().toUpperCase(), obj);
 		if (obj.getScoreboard() == null || !obj.getScoreboard().equals(this)){
 			obj.setScoreBoard(this);
 		}
@@ -38,9 +38,9 @@ public class SAPIScoreboard implements SScoreboard{
 		return obj;
 	}
 
-	public SObjective registerNewObjective(String objectiveName, String criteria, String displayName,
+	public SObjective registerNewObjective(String id, String displayName, String criteria,
 			SAPIDisplaySlot slot) {
-		SAPIObjective o =  new SAPIObjective(objectiveName,criteria);
+		SAPIObjective o =  new SAPIObjective(id, displayName,criteria);
 		o.setDisplayName(displayName);
 		o.setDisplaySlot(slot);
 		registerNewObjective(o);
