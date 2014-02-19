@@ -125,8 +125,14 @@ public class SAPIScoreboard implements SScoreboard{
 	}
 
 	public SEntry removeEntry(SEntry e) {
-		return handler.removeEntry(e);
-	}
+		e = handler.removeEntry(e);
+        if (e != null){
+            for (SObjective o : this.getObjectives()) {
+                o.removeEntry(e);
+            }
+        }
+        return e;
+    }
 
 	public String getName() {
 		return name;

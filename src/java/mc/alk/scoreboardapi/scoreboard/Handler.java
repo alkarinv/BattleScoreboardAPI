@@ -51,6 +51,7 @@ public class Handler {
 			return getEntry(id);
 		}
 	}
+
 	public SEntry removeEntry(SEntry e) {
 		Integer id = idmap.remove(e.getID());
 		if (id != null){

@@ -1,20 +1,24 @@
 package mc.alk.scoreboardapi.scoreboard;
 
+import mc.alk.scoreboardapi.api.SAPI;
 import mc.alk.scoreboardapi.api.SEntry;
 import mc.alk.scoreboardapi.api.SObjective;
 import mc.alk.scoreboardapi.api.SScoreboard;
 import mc.alk.scoreboardapi.api.STeam;
 import org.bukkit.OfflinePlayer;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class SAPIObjective implements SObjective{
 	protected final String id;
 	protected String criteria;
+    protected String combinedDisplayName;
 	protected String displayName;
-    protected String displayNameSuffix="";
-    protected String displayNamePrefix="";
+    protected String displayNameSuffix;
+    protected String displayNamePrefix;
 	protected SAPIDisplaySlot slot;
 
     protected SScoreboard scoreboard;
@@ -28,8 +32,10 @@ public class SAPIObjective implements SObjective{
 	int priority;
 
 	protected Set<SEntry> entries = new HashSet<SEntry>();
+    protected TreeMap<Integer,SEntry> scores = new TreeMap<Integer,SEntry>(Collections.reverseOrder());
 
-	public SAPIObjective(String id, String displayName, String criteria) {
+
+    public SAPIObjective(String id, String displayName, String criteria) {
 		this(id, displayName,criteria,50);
 	}
 
@@ -59,17 +65,18 @@ public class SAPIObjective implements SObjective{
 		return criteria;
 	}
 
-    public String getFullDisplayName() {
+    public String getBaseDisplayName() {
         return displayName;
     }
 
 	public String getDisplayName(){
-		return displayName == null ? id : displayName;
+		return combinedDisplayName;
 	}
 
 	public void setDisplayName(String displayName){
 		this.displayName = colorChat(displayName);
-	}
+        _setDisplayName();
+    }
 
     @Override
     public String getDisplayNameSuffix() {
@@ -79,6 +86,7 @@ public class SAPIObjective implements SObjective{
     @Override
 	public void setDisplayNameSuffix(String suffix) {
 		this.displayNameSuffix = colorChat(suffix);
+        _setDisplayName();
 	}
 
     @Override
@@ -89,6 +97,7 @@ public class SAPIObjective implements SObjective{
     @Override
     public void setDisplayNamePrefix(String prefix) {
         this.displayNamePrefix = colorChat(prefix);
+        _setDisplayName();
     }
 
     public void setDisplaySlot(SAPIDisplaySlot slot) {
@@ -118,7 +127,10 @@ public class SAPIObjective implements SObjective{
 		this.scoreboard = sapiScoreboard;
 	}
 
-	public boolean setPoints(SEntry e, int points) {return false;}
+	public boolean setPoints(SEntry e, int points) {
+//        if (!scores.containsKey(e))
+        return false;
+    }
 
 	public boolean setTeamPoints(STeam team, int points) {
 		if (displayTeams){
@@ -201,7 +213,6 @@ public class SAPIObjective implements SObjective{
 
 	@Override
 	public SEntry removeEntry(SEntry entry) {
-		scoreboard.removeEntry(entry);
 		return entries.remove(entry) ? entry : null;
 	}
 
@@ -236,6 +247,20 @@ public class SAPIObjective implements SObjective{
 	public boolean contains(SEntry e) {
 		return entries.contains(e);
 	}
+
+    private void _setDisplayName(){
+        if ((displayNamePrefix != null ? displayNamePrefix.length() : 0) +
+                displayName.length() +
+                (displayNameSuffix != null ? displayNameSuffix.length() : 0) > SAPI.MAX_NAMESIZE) {
+            int size = (displayNamePrefix != null ? displayNamePrefix.length() : 0) +
+                    (displayNameSuffix != null ? displayNameSuffix.length() : 0);
+            this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
+                    displayName.substring(0, SAPI.MAX_NAMESIZE - size) + (displayNameSuffix != null ? displayNameSuffix : "");
+        } else {
+            this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
+                    displayName + (displayNameSuffix != null ? displayNameSuffix : "");
+        }
+    }
 
 
 }

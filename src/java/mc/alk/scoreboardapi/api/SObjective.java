@@ -22,6 +22,7 @@ public interface SObjective {
      * @return suffix
      */
     public String getDisplayNameSuffix();
+
 	/**
      * prefix + displayName + suffix must be less than or equal 32 characters
 	 * @param suffix set the suffix
