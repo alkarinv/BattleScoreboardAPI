@@ -13,8 +13,11 @@ import org.bukkit.scoreboard.Score;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class BObjective extends SAPIObjective{
 	Objective o;
@@ -32,6 +35,8 @@ public class BObjective extends SAPIObjective{
 		if (board != null)
 			setScoreBoard(board);
 	}
+    protected TreeMap<Integer,List<SEntry>> scores = new TreeMap<Integer,List<SEntry>>(Collections.reverseOrder());
+    protected Set<SEntry> set16 = new HashSet<SEntry>();
 
 	@Override
 	public void setDisplayName(String displayName){
@@ -57,12 +62,12 @@ public class BObjective extends SAPIObjective{
         _setDisplayName();
     }
 
-    private void _setDisplayName(){
-        if (displayNamePrefix.length() + getDisplayName().length() + displayNameSuffix.length() <= 32){
-            o.setDisplayName(displayNamePrefix+getDisplayName()+displayNameSuffix);
-        } else {
-            o.setDisplayName(displayNamePrefix+getDisplayName()+displayNameSuffix);
-        }
+    @Override
+    protected void _setDisplayName(){
+        super._setDisplayName();
+        if (o == null)
+            return;
+        o.setDisplayName(getDisplayName());
     }
 
     @Override
@@ -80,8 +85,14 @@ public class BObjective extends SAPIObjective{
 	@Override
 	public boolean setPoints(SEntry l, int points) {
 		super.setPoints(l, points);
-		this.entries.add(l);
-		if (l instanceof STeam){
+		entries.add(l);
+        addScore(l, points);
+        if (set16.size() < 16){
+            set16.add(l);
+        } else {
+        }
+
+        if (l instanceof STeam){
 			if (this.isDisplayTeams())
 				setScore(l,points);
 		} else if (l instanceof SAPIPlayerEntry){
@@ -93,7 +104,15 @@ public class BObjective extends SAPIObjective{
 		return true;
 	}
 
-	private void setScore(SEntry e, int points){
+    private void addScore(SEntry l, int points) {
+        List<SEntry> es = scores.get(points);
+        if (es == null) {
+            es = new ArrayList<SEntry>();
+            scores.put(points, es);
+        }
+    }
+
+    private void setScore(SEntry e, int points){
 		if (points != 0){
 			o.getScore(e.getOfflinePlayer()).setScore(points);
 		} else {

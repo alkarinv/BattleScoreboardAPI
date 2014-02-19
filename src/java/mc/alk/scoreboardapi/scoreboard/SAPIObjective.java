@@ -1,16 +1,13 @@
 package mc.alk.scoreboardapi.scoreboard;
 
-import mc.alk.scoreboardapi.api.SAPI;
 import mc.alk.scoreboardapi.api.SEntry;
 import mc.alk.scoreboardapi.api.SObjective;
 import mc.alk.scoreboardapi.api.SScoreboard;
 import mc.alk.scoreboardapi.api.STeam;
 import org.bukkit.OfflinePlayer;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class SAPIObjective implements SObjective{
 	protected final String id;
@@ -32,8 +29,6 @@ public class SAPIObjective implements SObjective{
 	int priority;
 
 	protected Set<SEntry> entries = new HashSet<SEntry>();
-    protected TreeMap<Integer,SEntry> scores = new TreeMap<Integer,SEntry>(Collections.reverseOrder());
-
 
     public SAPIObjective(String id, String displayName, String criteria) {
 		this(id, displayName,criteria,50);
@@ -248,14 +243,14 @@ public class SAPIObjective implements SObjective{
 		return entries.contains(e);
 	}
 
-    private void _setDisplayName(){
+    protected void _setDisplayName(){
         if ((displayNamePrefix != null ? displayNamePrefix.length() : 0) +
                 displayName.length() +
-                (displayNameSuffix != null ? displayNameSuffix.length() : 0) > SAPI.MAX_NAMESIZE) {
+                (displayNameSuffix != null ? displayNameSuffix.length() : 0) > 32) {
             int size = (displayNamePrefix != null ? displayNamePrefix.length() : 0) +
                     (displayNameSuffix != null ? displayNameSuffix.length() : 0);
             this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
-                    displayName.substring(0, SAPI.MAX_NAMESIZE - size) + (displayNameSuffix != null ? displayNameSuffix : "");
+                    displayName.substring(0, 32 - size) + (displayNameSuffix != null ? displayNameSuffix : "");
         } else {
             this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
                     displayName + (displayNameSuffix != null ? displayNameSuffix : "");
