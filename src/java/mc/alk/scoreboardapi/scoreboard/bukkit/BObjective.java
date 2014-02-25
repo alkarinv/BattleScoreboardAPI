@@ -142,9 +142,6 @@ public class BObjective extends SAPIObjective{
                 }
             }
         }
-        for (SEntry sco : cur15) {
-            System.out.println(sco.getOfflinePlayer().getName() + "  " + entries.get(sco).getScore() + "   " + sco);
-        }
     }
 
     private void _setScore(SEntry e, int points) {

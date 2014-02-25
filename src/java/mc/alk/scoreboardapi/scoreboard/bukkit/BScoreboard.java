@@ -116,6 +116,9 @@ public class BScoreboard extends SAPIScoreboard{
     @Override
 	public SEntry removeEntry(SEntry e) {
 		board.resetScores(e.getOfflinePlayer());
+        Team t = board.getPlayerTeam(e.getOfflinePlayer());
+        if (t != null) {
+            t.removePlayer(e.getOfflinePlayer());}
 		return super.removeEntry(e);
 	}
 
