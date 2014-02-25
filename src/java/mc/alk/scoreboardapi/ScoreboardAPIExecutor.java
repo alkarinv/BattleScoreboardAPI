@@ -92,10 +92,25 @@ public class ScoreboardAPIExecutor extends BaseExecutor {
 			return sendMessage(sender,"&cobjective " + objective +" doesnt exist");
 		}
 		o.setDisplayPlayers(b);
-		return true;
+        return sendMessage(sender,"&2objective " + objective +" setDisplayPlayers " + b);
 	}
 
-	@MCCommand(cmds={"addToTeam","att"}, op=true)
+    @MCCommand(cmds={"setDisplayTeams"}, op=true)
+    public boolean setDisplayTeams(CommandSender sender, String objective, boolean b) {
+        SObjective o = sh.bs.getObjective(objective);
+        if (o == null){
+            return sendMessage(sender,"&cobjective " + objective +" doesnt exist");}
+        o.setDisplayTeams(b);
+        return sendMessage(sender,"&2objective " + objective +" setDisplayTeams " + b);
+    }
+
+    @MCCommand(cmds={"clearBoard"}, op=true)
+    public boolean clearBoard(CommandSender sender) {
+        sh.bs.clear();
+        return sendMessage(sender,"&2 " + sh.bs.getName()+" cleared");
+    }
+
+    @MCCommand(cmds={"addToTeam","att"}, op=true)
 	public boolean addToTeam(CommandSender sender, String teamName, Player p) {
 		STeam t = sh.bs.getTeam(teamName);
 		if (t == null){
@@ -166,10 +181,24 @@ public class ScoreboardAPIExecutor extends BaseExecutor {
         return sendMessage(sender, "&6setEntryName "+ newDisplayName+" " + sh.bs.getEntry(id).getDisplayName());
 	}
 
+    @MCCommand(cmds={"setEntryPrefix","sen"}, op=true)
+    public boolean setEntryPrefix(CommandSender sender, String id, String prefix) {
+        if (prefix.contains("\\\""))
+            prefix = prefix.replaceAll("\\\"", "");
+        sh.bs.setEntryNamePrefix(id, prefix);
+        return sendMessage(sender, "&6setEntryPrefix "+ prefix+" " + sh.bs.getEntry(id).getDisplayName());
+    }
+
 	@MCCommand(cmds={"setScore","ss"}, op=true)
-	public boolean setScore(CommandSender sender, String teamid, int score) {
-		return true;
-	}
+	public boolean setScore(CommandSender sender,String objective, String id, int score) {
+        SObjective o = sh.bs.getObjective(objective);
+        if (o == null){
+            return sendMessage(sender,"&cobjective " + objective +" doesnt exist");}
+
+        SEntry e = sh.bs.getEntry(id);
+        o.setPoints(e, score);
+        return sendMessage(sender, "&2setScore "+ id+" " + score);
+    }
 
 	@MCCommand(cmds={"printScoreboard","ps"}, op=true)
 	public boolean printScoreboard(CommandSender sender) {
@@ -184,8 +213,8 @@ public class ScoreboardAPIExecutor extends BaseExecutor {
         }
 	}
 
-	@MCCommand(cmds={"setScore","ss"}, op=true)
-	public boolean setScore(CommandSender sender, String objective, String teamName, int points) {
+	@MCCommand(cmds={"setTeamScore","ss"}, op=true)
+	public boolean setTeamScore(CommandSender sender, String objective, String teamName, int points) {
         STeam t = sh.bs.getTeam(teamName);
 		if (t == null){
 			return sendMessage(sender,"&team " + teamName+" doesnt exist");}

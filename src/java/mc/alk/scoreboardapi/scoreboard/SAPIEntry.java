@@ -5,7 +5,7 @@ import mc.alk.scoreboardapi.api.SEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-public class SAPIEntry implements SEntry{
+public class SAPIEntry implements SEntry, Comparable<SEntry>{
 	private final String id;
     private String displayName;
     private String displayNameSuffix;
@@ -90,5 +90,10 @@ public class SAPIEntry implements SEntry{
 
     public String toString() {
         return "[SAPIEntry " + this.getID() + " : " + this.getDisplayName() + "]";
+    }
+
+    @Override
+    public int compareTo(SEntry o) {
+        return this.getID().compareTo(o.getID());
     }
 }

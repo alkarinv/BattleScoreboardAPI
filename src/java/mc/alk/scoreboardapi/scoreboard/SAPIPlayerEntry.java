@@ -5,7 +5,7 @@ import mc.alk.scoreboardapi.api.SEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-public class SAPIPlayerEntry implements SEntry{
+public class SAPIPlayerEntry implements SEntry, Comparable<SEntry>{
 	OfflinePlayer p;
     private String displayName;
     private String displayNameSuffix;
@@ -88,4 +88,8 @@ public class SAPIPlayerEntry implements SEntry{
         }
     }
 
+    @Override
+    public int compareTo(SEntry o) {
+        return this.getID().compareTo(o.getID());
+    }
 }
