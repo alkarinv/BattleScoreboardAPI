@@ -42,7 +42,7 @@ public class BScoreboard extends SAPIScoreboard{
 
     @Override
 	public void setScoreboard(Player p) {
-		if (p.getScoreboard() != null || !oldBoards.containsKey(p.getName()))
+		if (p.getScoreboard() != null && !oldBoards.containsKey(p.getName()))
 			oldBoards.put(p.getName(), p.getScoreboard());
 		p.setScoreboard(this.board);
 	}
