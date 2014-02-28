@@ -16,6 +16,7 @@ public class SAPIFactory {
 			SAPIFactory.hasBukkitScoreboard = false;
 		}
 	}
+
     /**
      * Create a new Objective
      * @param id id of the Objective
@@ -32,6 +33,22 @@ public class SAPIFactory {
 		o.setDisplaySlot(slot);
 		return o;
 	}
+
+    /**
+     * Create a new SAPIObjective
+     * @param id id of the Objective
+     * @param displayName how to display the Objective
+     * @param criteria What is the criteria
+     * @param slot Which display slot to use [SIDEBAR, PLAYER_LIST, BELOW_NAME]
+     * @param priority lower means this Objective will be shown in the same slot over another with higher priority
+     * @return The new SAPIObjective
+     */
+    public static SAPIObjective createSAPIObjective(String id, String displayName, String criteria,
+                                                SAPIDisplaySlot slot, int priority) {
+        SAPIObjective o =  new SAPIObjective(id,displayName,criteria,priority);
+        o.setDisplaySlot(slot);
+        return o;
+    }
 
     public static SScoreboard createScoreboard(String name) {
         return hasBukkitScoreboard ? new BScoreboard(name) :  new SAPIScoreboard(name);
