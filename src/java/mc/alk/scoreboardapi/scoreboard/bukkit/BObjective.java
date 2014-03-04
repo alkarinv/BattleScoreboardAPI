@@ -111,47 +111,8 @@ public class BObjective extends SAPIObjective{
         return true;
     }
 
-    @Override
-    public SEntry removeEntry(SEntry entry) {
-        SAPIScore sc = entries.remove(entry);
-        if (sc == null) {
-            return null;
-        }
-//        removeScore(sc);
-
-        return entry;
-//        return null;
-    }
-//
-    private void removeScore(SAPIScore e) {
-        scores.remove(e);
-        HashSet<SEntry> now15 = new HashSet<SEntry>(SAPI.MAX_ENTRIES);
-        ArrayList<SAPIScore> added = new ArrayList<SAPIScore>(2);
-        Iterator<SAPIScore> iter = scores.iterator();
-        for (int i =0; i < SAPI.MAX_ENTRIES-1 && iter.hasNext(); i++) {
-            SAPIScore sapiScore = iter.next();
-            now15.add(sapiScore.getEntry());
-            if (!cur15.contains(sapiScore.getEntry())) {
-                added.add(sapiScore);}
-        }
-        cur15.removeAll(now15);
-        for (SEntry se : cur15) {
-            o.getScoreboard().resetScores(se.getOfflinePlayer());
-        }
-        cur15 = now15;
-        if (added.isEmpty()){
-        } else {
-            for (SAPIScore se : added){
-                _setScore(se.getEntry(), se.getScore());
-            }
-        }
-
-    }
 
     private void addScore(SAPIScore e, int points) {
-        System.out.println("##### scores--------#### "  + scores.size()  +
-                "  e="+e.getEntry().getOfflinePlayer().getName() +"  " + points
-            +"    contains=" + scores.contains(e) +" id=" + e.getEntry().getID());
         scores.remove(e);
         e.setScore(points);
         scores.add(e);
@@ -184,13 +145,6 @@ public class BObjective extends SAPIObjective{
                 }
             }
         }
-        for (SAPIScore sc : scores) {
-            System.out.println(" --- " + sc.getEntry().getOfflinePlayer().getName() + " " + sc.getScore());
-        }
-    }
-
-    private void _recalc(){
-
     }
 
     private void _setScore(SEntry e, int points) {
@@ -216,7 +170,7 @@ public class BObjective extends SAPIObjective{
         if (scoreboard == null)
             return;
         if (o != null && scoreboard.getObjective(slot)==this){
-            o.setDisplaySlot(toDisplaySlot(slot));
+            o.setDisplaySlot(toBukkitDisplaySlot(slot));
         }
     }
 
@@ -255,7 +209,7 @@ public class BObjective extends SAPIObjective{
         }
     }
 
-    public static DisplaySlot toDisplaySlot(SAPIDisplaySlot slot) {
+    public static DisplaySlot toBukkitDisplaySlot(SAPIDisplaySlot slot) {
         switch (slot){
             case BELOW_NAME:
                 return DisplaySlot.BELOW_NAME;
