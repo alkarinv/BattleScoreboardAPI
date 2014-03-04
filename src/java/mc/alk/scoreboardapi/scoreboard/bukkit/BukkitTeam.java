@@ -1,5 +1,6 @@
 package mc.alk.scoreboardapi.scoreboard.bukkit;
 
+import mc.alk.scoreboardapi.api.SEntry;
 import mc.alk.scoreboardapi.api.SObjective;
 import mc.alk.scoreboardapi.scoreboard.SAPIObjective;
 import mc.alk.scoreboardapi.scoreboard.SAPITeam;
@@ -26,7 +27,10 @@ public class BukkitTeam extends SAPITeam {
 			for (SObjective o : board.getObjectives()){
 				if (o.isDisplayPlayers() && o.contains(this)){
 					for (OfflinePlayer player: team.getPlayers()){
-						o.addEntry(player, 0);
+                        SEntry e = o.getScoreboard().getEntry(player);
+                        if (o.getPoints(e) == -1){
+                            o.addEntry(player, 0);
+                        }
 					}
 				}
 			}
@@ -39,10 +43,13 @@ public class BukkitTeam extends SAPITeam {
 		team.addPlayer(p);
 		if (board != null){
 			for (SObjective o : board.getObjectives()){
-				if (o.isDisplayPlayers() && o.contains(this)){
-					o.addEntry(p, 0);
-				}
-			}
+				if (o.isDisplayPlayers() && o.contains(this)) {
+                    SEntry e = o.getScoreboard().getEntry(p);
+                    if (o.getPoints(e) == -1){
+                        o.addEntry(p, 0);
+                    }
+                }
+            }
 		}
 	}
 

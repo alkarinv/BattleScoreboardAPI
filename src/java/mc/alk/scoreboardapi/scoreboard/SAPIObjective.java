@@ -127,6 +127,7 @@ public class SAPIObjective implements SObjective{
         return has;
     }
 
+
     protected boolean setPoints(SAPIScore o, int points) {
         boolean change = o.getScore() != points;
         if (change){
@@ -166,8 +167,9 @@ public class SAPIObjective implements SObjective{
         return getPoints(l);
     }
 
-    protected int getPoints(SEntry entry) {
-        return -1;
+    @Override
+    public int getPoints(SEntry e) {
+        return entries.containsKey(e) ? entries.get(e).getScore() : -1;
     }
 
     public static String colorChat(String msg) {return msg.replace('&', (char) 167);}
@@ -191,11 +193,15 @@ public class SAPIObjective implements SObjective{
     }
 
     final SAPIScore getOrCreateSAPIScore(SEntry e){
+        return getOrCreateSAPIScore(e,0);
+    }
+
+    final SAPIScore getOrCreateSAPIScore(SEntry e, int points){
         if (entries.containsKey(e))
             return entries.get(e);
-        SAPIScore o = new SAPIScore(e, 0);
+        SAPIScore o = new SAPIScore(e, points);
         entries.put(e, o);
-        setPoints(o, 0);
+        setPoints(o, points);
         return o;
     }
 
@@ -204,7 +210,12 @@ public class SAPIObjective implements SObjective{
         if (entry instanceof STeam) {
             return addTeam((STeam) entry, points);}
         boolean has = entries.containsKey(entry);
-        setPoints(getOrCreateSAPIScore(entry), points);
+        if (!has) {
+            getOrCreateSAPIScore(entry, points);
+        } else {
+            setPoints(getOrCreateSAPIScore(entry), points);
+        }
+
         return has;
     }
 

@@ -49,7 +49,7 @@ public interface SObjective {
 
 	public int getPriority();
 
-	public SEntry addEntry(OfflinePlayer p, int defaultPoints);
+    public SEntry addEntry(OfflinePlayer p, int defaultPoints);
 
 	public SEntry addEntry(String id, int defaultPoints);
 
@@ -67,7 +67,11 @@ public interface SObjective {
 
 	public void setScoreBoard(SScoreboard scoreboard);
 
-	public boolean setPoints(String id, int points);
+    int getPoints(String id);
+
+    int getPoints(SEntry e);
+
+    public boolean setPoints(String id, int points);
 
 	public boolean setPoints(SEntry entry, int points);
 

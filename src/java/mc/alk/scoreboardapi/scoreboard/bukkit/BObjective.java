@@ -102,18 +102,60 @@ public class BObjective extends SAPIObjective{
     @Override
     protected boolean setPoints(SAPIScore o, int points) {
         if ( (o.getEntry() instanceof STeam && isDisplayTeams()) ||
-                (o.getEntry() instanceof SAPIPlayerEntry && isDisplayPlayers())){
-            setScore(o,points);
+                (o.getEntry() instanceof SAPIPlayerEntry && isDisplayPlayers()) ||
+                (!(o.getEntry() instanceof SAPIPlayerEntry) && !(o.getEntry() instanceof STeam))){
+            addScore(o, points);
         } else {
             super.setPoints(o, points);
         }
         return true;
     }
 
-    private void setScore(SAPIScore e, int points) {
+    @Override
+    public SEntry removeEntry(SEntry entry) {
+        SAPIScore sc = entries.remove(entry);
+        if (sc == null) {
+            return null;
+        }
+//        removeScore(sc);
+
+        return entry;
+//        return null;
+    }
+//
+    private void removeScore(SAPIScore e) {
+        scores.remove(e);
+        HashSet<SEntry> now15 = new HashSet<SEntry>(SAPI.MAX_ENTRIES);
+        ArrayList<SAPIScore> added = new ArrayList<SAPIScore>(2);
+        Iterator<SAPIScore> iter = scores.iterator();
+        for (int i =0; i < SAPI.MAX_ENTRIES-1 && iter.hasNext(); i++) {
+            SAPIScore sapiScore = iter.next();
+            now15.add(sapiScore.getEntry());
+            if (!cur15.contains(sapiScore.getEntry())) {
+                added.add(sapiScore);}
+        }
+        cur15.removeAll(now15);
+        for (SEntry se : cur15) {
+            o.getScoreboard().resetScores(se.getOfflinePlayer());
+        }
+        cur15 = now15;
+        if (added.isEmpty()){
+        } else {
+            for (SAPIScore se : added){
+                _setScore(se.getEntry(), se.getScore());
+            }
+        }
+
+    }
+
+    private void addScore(SAPIScore e, int points) {
+        System.out.println("##### scores--------#### "  + scores.size()  +
+                "  e="+e.getEntry().getOfflinePlayer().getName() +"  " + points
+            +"    contains=" + scores.contains(e) +" id=" + e.getEntry().getID());
         scores.remove(e);
         e.setScore(points);
         scores.add(e);
+
         if (scores.size() < SAPI.MAX_ENTRIES) {
             _setScore(e.getEntry(), points);
             cur15.add(e.getEntry());
@@ -142,6 +184,13 @@ public class BObjective extends SAPIObjective{
                 }
             }
         }
+        for (SAPIScore sc : scores) {
+            System.out.println(" --- " + sc.getEntry().getOfflinePlayer().getName() + " " + sc.getScore());
+        }
+    }
+
+    private void _recalc(){
+
     }
 
     private void _setScore(SEntry e, int points) {
@@ -195,9 +244,10 @@ public class BObjective extends SAPIObjective{
                 if (!contains(entry))
                     continue;
                 if ((displayPlayers && entry instanceof SAPIPlayerEntry) ||
-                        (displayTeams && entry instanceof STeam)) {
+                        (displayTeams && entry instanceof STeam) ||
+                        (!(entry instanceof SAPIPlayerEntry) && !(entry instanceof STeam))) {
                     SAPIScore sc = entries.get(entry);
-                    setScore(sc, sc.getScore());
+                    addScore(sc, sc.getScore());
                 } else {
                     o.getScoreboard().resetScores(entry.getOfflinePlayer());
                 }
