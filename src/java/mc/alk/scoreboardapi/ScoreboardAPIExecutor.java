@@ -196,6 +196,9 @@ public class ScoreboardAPIExecutor extends BaseExecutor {
             return sendMessage(sender,"&cobjective " + objective +" doesnt exist");}
 
         SEntry e = sh.bs.getEntry(id);
+        if (e==null){
+            return sendMessage(sender,"&centry " + id+" doesnt exist");
+        }
         o.setPoints(e, score);
         return sendMessage(sender, "&2setScore "+ id+" " + score);
     }

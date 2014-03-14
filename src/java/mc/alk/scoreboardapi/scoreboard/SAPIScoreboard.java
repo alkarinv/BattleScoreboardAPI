@@ -24,11 +24,13 @@ public class SAPIScoreboard implements SScoreboard{
 		this.name = name;
 	}
 
-	public void clear(){
+	@Override
+    public void clear(){
 		objectives.clear();
 	}
 
-	public SObjective registerNewObjective(SObjective obj) {
+	@Override
+    public SObjective registerNewObjective(SObjective obj) {
 		objectives.put(obj.getID().toUpperCase(), obj);
 		if (obj.getScoreboard() == null || !obj.getScoreboard().equals(this)){
 			obj.setScoreBoard(this);
@@ -38,7 +40,8 @@ public class SAPIScoreboard implements SScoreboard{
 		return obj;
 	}
 
-	public SObjective registerNewObjective(String id, String displayName, String criteria,
+	@Override
+    public SObjective registerNewObjective(String id, String displayName, String criteria,
 			SAPIDisplaySlot slot) {
 		SAPIObjective o =  new SAPIObjective(id, displayName,criteria);
 		o.setDisplayName(displayName);
@@ -47,11 +50,13 @@ public class SAPIScoreboard implements SScoreboard{
 		return o;
 	}
 
-	public void setDisplaySlot(SAPIDisplaySlot slot, SObjective objective) {
+	@Override
+    public void setDisplaySlot(SAPIDisplaySlot slot, SObjective objective) {
 		setDisplaySlot(slot,objective, false);
 	}
 
-	public void setDisplaySlot(SAPIDisplaySlot slot, SObjective objective, boolean fromObjective) {
+	@Override
+    public void setDisplaySlot(SAPIDisplaySlot slot, SObjective objective, boolean fromObjective) {
 		setDisplaySlot(slot, objective,fromObjective, true);
 	}
 
@@ -83,15 +88,18 @@ public class SAPIScoreboard implements SScoreboard{
 		return false;
 	}
 
-	public SObjective getObjective(SAPIDisplaySlot slot) {
+	@Override
+    public SObjective getObjective(SAPIDisplaySlot slot) {
 		return slots.get(slot);
 	}
 
-	public SObjective getObjective(String id) {
+	@Override
+    public SObjective getObjective(String id) {
 		return objectives.get(id.toUpperCase());
 	}
 
-	public String getPrintString() {
+	@Override
+    public String getPrintString() {
 		StringBuilder sb = new StringBuilder();
 		for (Entry<SAPIDisplaySlot,SObjective> entry : slots.entrySet()){
 			sb.append("&5").append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
@@ -99,32 +107,38 @@ public class SAPIScoreboard implements SScoreboard{
 		return sb.toString();
 	}
 
-	public SEntry createEntry(OfflinePlayer p) {
+	@Override
+    public SEntry createEntry(OfflinePlayer p) {
 		return createEntry(p,p.getName());
 	}
 
-	public SEntry createEntry(OfflinePlayer p, String displayName) {
+	@Override
+    public SEntry createEntry(OfflinePlayer p, String displayName) {
 		return handler.getOrCreateEntry(p, displayName);
 	}
 
-	public SEntry createEntry(String id, String displayName) {
+	@Override
+    public SEntry createEntry(String id, String displayName) {
 		return handler.getOrCreateEntry(id, displayName);
 	}
 
-	public STeam createTeamEntry(String id, String displayName) {
+	@Override
+    public STeam createTeamEntry(String id, String displayName) {
 		SAPITeam st = new SAPITeam(this,id,displayName);
 		handler.registerEntry(st);
 		return st;
 	}
 
-	public SEntry removeEntry(OfflinePlayer p) {
+	@Override
+    public SEntry removeEntry(OfflinePlayer p) {
 		SEntry sb = handler.getEntry(p);
 		if (sb != null){
 			return removeEntry(sb);}
 		return null;
 	}
 
-	public SEntry removeEntry(SEntry e) {
+	@Override
+    public SEntry removeEntry(SEntry e) {
 		e = handler.removeEntry(e);
         if (e != null){
             for (SObjective o : this.getObjectives()) {
@@ -134,19 +148,23 @@ public class SAPIScoreboard implements SScoreboard{
         return e;
     }
 
-	public String getName() {
+	@Override
+    public String getName() {
 		return name;
 	}
 
-	public SEntry getEntry(String id) {
+	@Override
+    public SEntry getEntry(String id) {
 		return handler.getEntry(id);
 	}
 
-	public SEntry getEntry(OfflinePlayer player) {
+	@Override
+    public SEntry getEntry(OfflinePlayer player) {
 		return handler.getEntry(player);
 	}
 
-	public STeam getTeam(String id) {
+	@Override
+    public STeam getTeam(String id) {
 		return handler.getTeamEntry(id);
 	}
 

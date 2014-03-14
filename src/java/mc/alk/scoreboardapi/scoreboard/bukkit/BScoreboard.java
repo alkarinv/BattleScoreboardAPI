@@ -20,45 +20,45 @@ import java.util.Set;
 
 public class BScoreboard extends SAPIScoreboard{
 
-	protected Scoreboard board;
+    protected Scoreboard board;
 
-	HashMap<String,Scoreboard> oldBoards = new HashMap<String,Scoreboard>();
+    HashMap<String,Scoreboard> oldBoards = new HashMap<String,Scoreboard>();
 
-	public BScoreboard(String name) {
-		super(name);
-		ScoreboardManager manager = Bukkit.getScoreboardManager();
-		board = manager.getNewScoreboard();
-	}
-
-	@Override
-	public SAPIObjective registerNewObjective(String id, String displayName, String criteria,
-			SAPIDisplaySlot slot) {
-		BObjective o =  new BObjective(this,id, displayName,criteria);
-		o.setDisplayName(displayName);
-		o.setDisplaySlot(slot);
-		registerNewObjective(o);
-		return o;
-	}
+    public BScoreboard(String name) {
+        super(name);
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        board = manager.getNewScoreboard();
+    }
 
     @Override
-	public void setScoreboard(Player p) {
-		if (p.getScoreboard() != null && !oldBoards.containsKey(p.getName()))
-			oldBoards.put(p.getName(), p.getScoreboard());
-		p.setScoreboard(this.board);
-	}
+    public SAPIObjective registerNewObjective(String id, String displayName, String criteria,
+                                              SAPIDisplaySlot slot) {
+        BObjective o =  new BObjective(this,id, displayName,criteria);
+        o.setDisplayName(displayName);
+        o.setDisplaySlot(slot);
+        registerNewObjective(o);
+        return o;
+    }
 
     @Override
-	public void removeScoreboard(Player player) {
-		try {
-			if (oldBoards.containsKey(player.getName())){
-				player.setScoreboard(oldBoards.remove(player.getName()));
-			} else {
-				player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-			}
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-	}
+    public void setScoreboard(Player p) {
+        if (p.getScoreboard() != null && !oldBoards.containsKey(p.getName()))
+            oldBoards.put(p.getName(), p.getScoreboard());
+        p.setScoreboard(this.board);
+    }
+
+    @Override
+    public void removeScoreboard(Player player) {
+        try {
+            if (oldBoards.containsKey(player.getName())){
+                player.setScoreboard(oldBoards.remove(player.getName()));
+            } else {
+                player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private class BoardUpdate{
         BoardUpdate(HashMap<Objective, Integer> scores, Team team){ this.scores=scores; this.team = team;}
@@ -114,38 +114,43 @@ public class BScoreboard extends SAPIScoreboard{
     }
 
     @Override
-	public SEntry removeEntry(SEntry e) {
-		board.resetScores(e.getOfflinePlayer());
+    public SEntry removeEntry(SEntry e) {
+        board.resetScores(e.getOfflinePlayer());
         Team t = board.getPlayerTeam(e.getOfflinePlayer());
         if (t != null) {
             t.removePlayer(e.getOfflinePlayer());}
-		return super.removeEntry(e);
-	}
+        return super.removeEntry(e);
+    }
 
-	public Scoreboard getBukkitScoreboard(){
-		return board;
-	}
+    public Scoreboard getBukkitScoreboard(){
+        return board;
+    }
 
-	@Override
-	public SAPITeam createTeamEntry(String id, String displayName) {
-		if (this.board.getTeam(id) != null)
-			return this.getTeam(id);
-		Team t = this.board.registerNewTeam(id);
-		t.setDisplayName(displayName);
-		BukkitTeam st = new BukkitTeam(this,t);
-		handler.registerEntry(st);
-		return st;
-	}
+    @Override
+    public SAPITeam createTeamEntry(String id, String displayName) {
+        SAPITeam st = this.getTeam(id);
+        if (st!=null)
+            return st;
+        Team t = this.board.getTeam(id);
+        if (t == null){
+            t = this.board.registerNewTeam(id);
+        }
 
-	@Override
-	public SAPITeam getTeam(String id) {
-		SEntry e = handler.getEntry(id);
-		return (e == null || !(e instanceof SAPITeam)) ? null : (SAPITeam)e;
-	}
+        t.setDisplayName(displayName);
+        BukkitTeam bt = new BukkitTeam(this, t);
+        handler.registerEntry(bt);
+        return bt;
+    }
 
-	public void addAllEntries(SObjective objective) {
-		for (SEntry entry : handler.getEntries()){
-			objective.addEntry(entry, 0);
-		}
-	}
+    @Override
+    public SAPITeam getTeam(String id) {
+        SEntry e = handler.getEntry(id);
+        return (e == null || !(e instanceof SAPITeam)) ? null : (SAPITeam)e;
+    }
+
+    public void addAllEntries(SObjective objective) {
+        for (SEntry entry : handler.getEntries()){
+            objective.addEntry(entry, 0);
+        }
+    }
 }

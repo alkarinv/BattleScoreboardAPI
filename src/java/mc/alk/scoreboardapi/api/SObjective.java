@@ -7,12 +7,19 @@ import org.bukkit.OfflinePlayer;
 
 public interface SObjective {
     /**
-     * Get the display name
+     * Get the display name: prefix + base + suffix
      * @return the display name
      */
     public String getDisplayName();
+
     /**
-     * prefix + displayName + suffix must be less than or equal 32 characters
+     * Get the display base: base
+     * @return the display name
+     */
+    public String getBaseDisplayName();
+
+    /**
+     * prefix + base + suffix must be less than 16 characters
 	 * @param displayName the display name of this Objective
 	 */
 	public void setDisplayName(String displayName);

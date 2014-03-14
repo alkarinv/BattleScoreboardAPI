@@ -1,5 +1,6 @@
 package mc.alk.scoreboardapi.scoreboard.bukkit;
 
+import mc.alk.scoreboardapi.SAPIUtil;
 import mc.alk.scoreboardapi.api.SAPI;
 import mc.alk.scoreboardapi.api.SEntry;
 import mc.alk.scoreboardapi.api.SScoreboard;
@@ -8,6 +9,8 @@ import mc.alk.scoreboardapi.scoreboard.SAPIDisplaySlot;
 import mc.alk.scoreboardapi.scoreboard.SAPIObjective;
 import mc.alk.scoreboardapi.scoreboard.SAPIPlayerEntry;
 import mc.alk.scoreboardapi.scoreboard.SAPIScore;
+import mc.alk.scoreboardapi.scoreboard.bukkit.compat.IScoreboardHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -28,6 +31,33 @@ public class BObjective extends SAPIObjective{
     TreeSet<SAPIScore> scores;
     Set<SEntry> cur15 = new HashSet<SEntry>();
     int worst = Integer.MAX_VALUE;
+    static IScoreboardHandler handler;
+
+    static
+    {
+        String version = null;
+        try
+        {
+            final String pkg = Bukkit.getServer().getClass().getPackage().getName();
+            version = pkg.substring(pkg.lastIndexOf('.') + 1);
+            final Class<?> clazz;
+            if (version.equalsIgnoreCase("craftbukkit")) {
+                handler = IScoreboardHandler.BLANK_HANDLER;
+            } else {
+                clazz = Class
+                        .forName("mc.alk.scoreboardapi.scoreboard.bukkit.compat."+version+".ScoreboardHandler");
+                Class<?>[] args = {};
+                handler = (IScoreboardHandler) clazz.getConstructor(args)
+                        .newInstance((Object[]) args);
+            }
+        }
+        catch (Exception e)
+        {
+            handler = IScoreboardHandler.BLANK_HANDLER;
+//            System.err.println(" version = " + version);
+//            e.printStackTrace();
+        }
+    }
 
     public BObjective(SScoreboard board, String id,String displayName, String criteria) {
         this(board,id,displayName,criteria,50);
@@ -85,6 +115,7 @@ public class BObjective extends SAPIObjective{
         if (o == null)
             return;
         o.setDisplayName(getDisplayName());
+
     }
 
     @Override
@@ -117,7 +148,7 @@ public class BObjective extends SAPIObjective{
         e.setScore(points);
         scores.add(e);
 
-        if (scores.size() < SAPI.MAX_ENTRIES) {
+        if (scores.size() <= SAPI.MAX_ENTRIES) {
             _setScore(e.getEntry(), points);
             cur15.add(e.getEntry());
             worst = Math.min(points, worst);
@@ -125,7 +156,7 @@ public class BObjective extends SAPIObjective{
             HashSet<SEntry> now15 = new HashSet<SEntry>(SAPI.MAX_ENTRIES);
             ArrayList<SAPIScore> added = new ArrayList<SAPIScore>(2);
             Iterator<SAPIScore> iter = scores.iterator();
-            for (int i =0; i < SAPI.MAX_ENTRIES-1 && iter.hasNext(); i++) {
+            for (int i =0; i < SAPI.MAX_ENTRIES && iter.hasNext(); i++) {
                 SAPIScore sapiScore = iter.next();
                 now15.add(sapiScore.getEntry());
                 if (!cur15.contains(sapiScore.getEntry())) {
@@ -288,4 +319,9 @@ public class BObjective extends SAPIObjective{
         return sb.toString();
     }
 
+    public void setDisplayName(String displayNamePrefix, String displayName, String displayNameSuffix, STeam team) {
+        String display = SAPIUtil.createLimitedString(
+                displayNamePrefix, displayName, displayNameSuffix, SAPI.MAX_OBJECTIVE_DISPLAYNAME_SIZE);
+        handler.setDisplayName(o, team, display);
+    }
 }

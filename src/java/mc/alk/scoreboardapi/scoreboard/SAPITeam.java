@@ -15,7 +15,8 @@ public class SAPITeam extends SAPIEntry implements STeam{
 		this.board = board;
 	}
 
-	public void addPlayer(OfflinePlayer p) {
+	@Override
+    public void addPlayer(OfflinePlayer p) {
 		this.board.createEntry(p);
 	}
 
@@ -26,19 +27,23 @@ public class SAPITeam extends SAPIEntry implements STeam{
 		}
 	}
 
-	public void removePlayer(OfflinePlayer p) {
+	@Override
+    public void removePlayer(OfflinePlayer p) {
 		this.board.removeEntry(p);
 	}
 
-	public Set<OfflinePlayer> getPlayers() {
+	@Override
+    public Set<OfflinePlayer> getPlayers() {
 		return new HashSet<OfflinePlayer>(0);
 	}
 
-	public void setPrefix(String prefix){
+	@Override
+    public void setPrefix(String prefix){
 		/* do nothing */
 	}
 
-	public void setSuffix(String suffix){
+	@Override
+    public void setSuffix(String suffix){
 		/* do nothing */
 	}
 

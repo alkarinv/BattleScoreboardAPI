@@ -1,5 +1,6 @@
 package mc.alk.scoreboardapi.scoreboard;
 
+import mc.alk.scoreboardapi.SAPIUtil;
 import mc.alk.scoreboardapi.api.SAPI;
 import mc.alk.scoreboardapi.api.SEntry;
 import org.bukkit.Bukkit;
@@ -17,7 +18,8 @@ public class SAPIEntry implements SEntry, Comparable<SEntry>{
         setDisplayName(displayName);
 	}
 
-	public OfflinePlayer getOfflinePlayer() {
+	@Override
+    public OfflinePlayer getOfflinePlayer() {
 		return Bukkit.getOfflinePlayer(combinedDisplayName);
 	}
 
@@ -74,18 +76,9 @@ public class SAPIEntry implements SEntry, Comparable<SEntry>{
         return displayNamePrefix;
     }
 
-    private void _setDisplayName(){
-        if ((displayNamePrefix != null ? displayNamePrefix.length() : 0) +
-                displayName.length() +
-                (displayNameSuffix != null ? displayNameSuffix.length() : 0) > SAPI.MAX_NAMESIZE) {
-            int size = (displayNamePrefix != null ? displayNamePrefix.length() : 0) +
-                    (displayNameSuffix != null ? displayNameSuffix.length() : 0);
-            this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
-                    displayName.substring(0, SAPI.MAX_NAMESIZE - size) + (displayNameSuffix != null ? displayNameSuffix : "");
-        } else {
-            this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
-                    displayName + (displayNameSuffix != null ? displayNameSuffix : "");
-        }
+    protected void _setDisplayName() {
+        this.combinedDisplayName = SAPIUtil.createLimitedString(displayNamePrefix, displayName,
+                displayNameSuffix, SAPI.MAX_NAMESIZE);
     }
 
     public String toString() {

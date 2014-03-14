@@ -237,7 +237,8 @@ public abstract class BaseExecutor implements CommandExecutor{
 		}
 	}
 
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	@Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		TreeMap<Integer,MethodWrapper> methodmap = null;
 
 		/// No method to handle, show some help

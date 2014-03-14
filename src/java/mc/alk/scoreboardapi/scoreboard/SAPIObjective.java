@@ -1,5 +1,7 @@
 package mc.alk.scoreboardapi.scoreboard;
 
+import mc.alk.scoreboardapi.SAPIUtil;
+import mc.alk.scoreboardapi.api.SAPI;
 import mc.alk.scoreboardapi.api.SEntry;
 import mc.alk.scoreboardapi.api.SObjective;
 import mc.alk.scoreboardapi.api.SScoreboard;
@@ -43,14 +45,17 @@ public class SAPIObjective implements SObjective{
         slot = SAPIDisplaySlot.NONE;
     }
 
+    @Override
     public SScoreboard getScoreboard() {
         return scoreboard;
     }
 
+    @Override
     public int getPriority(){
         return priority;
     }
 
+    @Override
     public String getID(){
         return id;
     }
@@ -59,14 +64,17 @@ public class SAPIObjective implements SObjective{
         return criteria;
     }
 
+    @Override
     public String getBaseDisplayName() {
         return displayName;
     }
 
+    @Override
     public String getDisplayName(){
         return combinedDisplayName;
     }
 
+    @Override
     public void setDisplayName(String displayName){
         this.displayName = colorChat(displayName);
         _setDisplayName();
@@ -94,6 +102,7 @@ public class SAPIObjective implements SObjective{
         _setDisplayName();
     }
 
+    @Override
     public void setDisplaySlot(SAPIDisplaySlot slot) {
         this.slot = slot;
         if (scoreboard != null){
@@ -101,26 +110,32 @@ public class SAPIObjective implements SObjective{
         }
     }
 
+    @Override
     public SAPIDisplaySlot getDisplaySlot() {
         return this.slot;
     }
 
+    @Override
     public void setDisplayPlayers(boolean display) {
         this.displayPlayers = display;
     }
 
+    @Override
     public void setDisplayTeams(boolean display) {
         this.displayTeams = display;
     }
 
+    @Override
     public boolean isDisplayPlayers(){
         return this.displayPlayers;
     }
 
+    @Override
     public void setScoreBoard(SScoreboard sapiScoreboard) {
         this.scoreboard = sapiScoreboard;
     }
 
+    @Override
     public boolean setPoints(SEntry e, int points) {
         boolean has = entries.containsKey(e);
         setPoints(getOrCreateSAPIScore(e), points);
@@ -137,6 +152,7 @@ public class SAPIObjective implements SObjective{
         return false;
     }
 
+    @Override
     public boolean setTeamPoints(STeam team, int points) {
         if (displayTeams){
             setPoints(team,points);
@@ -150,6 +166,7 @@ public class SAPIObjective implements SObjective{
         return true;
     }
 
+    @Override
     public boolean setPoints(String id, int points) {
         if (scoreboard == null)
             return false;
@@ -160,6 +177,7 @@ public class SAPIObjective implements SObjective{
         return true;
     }
 
+    @Override
     public int getPoints(String id) {
         SEntry l = scoreboard.getEntry(id);
         if (l == null)
@@ -240,6 +258,7 @@ public class SAPIObjective implements SObjective{
         return entries.remove(entry)!=null ? entry : null;
     }
 
+    @Override
     public STeam addTeam(String id, int points) {
         STeam t = scoreboard.getTeam(id);
         if (t != null){
@@ -248,6 +267,7 @@ public class SAPIObjective implements SObjective{
         return t;
     }
 
+    @Override
     public boolean addTeam(STeam entry, int points) {
         boolean has = entries.containsKey(entry);
         SAPIScore sc = getOrCreateSAPIScore(entry);
@@ -262,27 +282,21 @@ public class SAPIObjective implements SObjective{
         return has;
     }
 
+    @Override
     public boolean isDisplayTeams() {
         return this.displayTeams;
     }
 
+    @Override
     public boolean contains(SEntry e) {
         return entries.containsKey(e);
     }
 
-    protected void _setDisplayName(){
-        if ((displayNamePrefix != null ? displayNamePrefix.length() : 0) +
-                displayName.length() +
-                (displayNameSuffix != null ? displayNameSuffix.length() : 0) > 32) {
-            int size = (displayNamePrefix != null ? displayNamePrefix.length() : 0) +
-                    (displayNameSuffix != null ? displayNameSuffix.length() : 0);
-            this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
-                    displayName.substring(0, 32 - size) + (displayNameSuffix != null ? displayNameSuffix : "");
-        } else {
-            this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
-                    displayName + (displayNameSuffix != null ? displayNameSuffix : "");
-        }
+    protected void _setDisplayName() {
+        this.combinedDisplayName = SAPIUtil.createLimitedString(displayNamePrefix, displayName, displayNameSuffix,
+                SAPI.MAX_OBJECTIVE_DISPLAYNAME_SIZE);
     }
+
 
 
 }
