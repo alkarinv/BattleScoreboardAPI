@@ -1,6 +1,5 @@
 package mc.alk.scoreboardapi;
 
-import mc.alk.virtualPlayer.VirtualPlayers;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -463,9 +462,9 @@ public abstract class BaseExecutor implements CommandExecutor{
 
 	private Player verifyPlayer(String name) throws IllegalArgumentException {
 		Player p = findPlayer(name);
-		if (p == null){
-			p = VirtualPlayers.getPlayer(name);
-		}
+//		if (p == null){
+//			p = VirtualPlayers.getPlayer(name);
+//		}
 		if (p == null || !p.isOnline())
 			throw new IllegalArgumentException(name+" is not online ");
 		return p;

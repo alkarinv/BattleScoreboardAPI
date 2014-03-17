@@ -35,7 +35,7 @@ public class BObjective extends SAPIObjective{
 
     static
     {
-        String version = null;
+        String version;
         try
         {
             final String pkg = Bukkit.getServer().getClass().getPackage().getName();
