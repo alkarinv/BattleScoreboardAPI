@@ -6,6 +6,7 @@ import mc.alk.scoreboardapi.api.SScoreboard;
 import mc.alk.scoreboardapi.api.STeam;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,10 +20,11 @@ public class SAPIScoreboard implements SScoreboard{
 	protected HashMap<SAPIDisplaySlot,SObjective> slots = new HashMap<SAPIDisplaySlot,SObjective>();
 	protected final String name;
 	protected Handler handler = new Handler();
-
-	public SAPIScoreboard(String name){
+    protected final Plugin plugin;
+	public SAPIScoreboard(Plugin plugin, String name){
 		this.name = name;
-	}
+        this.plugin = plugin;
+    }
 
 	@Override
     public void clear(){
@@ -237,5 +239,9 @@ public class SAPIScoreboard implements SScoreboard{
         entry.setDisplayNameSuffix(name);
     }
 
+    @Override
+    public Plugin getPlugin() {
+        return plugin;
+    }
 
 }

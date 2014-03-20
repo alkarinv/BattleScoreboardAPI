@@ -3,6 +3,7 @@ package mc.alk.scoreboardapi.api;
 import mc.alk.scoreboardapi.scoreboard.SAPIDisplaySlot;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Collection;
 import java.util.List;
@@ -68,4 +69,5 @@ public interface SScoreboard {
 
     void setEntryNameSuffix(SEntry entry, String name);
 
+    public Plugin getPlugin();
 }

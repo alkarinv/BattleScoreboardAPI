@@ -33,29 +33,23 @@ public class BObjective extends SAPIObjective{
     int worst = Integer.MAX_VALUE;
     static IScoreboardHandler handler;
 
-    static
-    {
+    static {
         String version;
-        try
-        {
+        try {
             final String pkg = Bukkit.getServer().getClass().getPackage().getName();
             version = pkg.substring(pkg.lastIndexOf('.') + 1);
             final Class<?> clazz;
             if (version.equalsIgnoreCase("craftbukkit")) {
                 handler = IScoreboardHandler.BLANK_HANDLER;
             } else {
-                clazz = Class
-                        .forName("mc.alk.scoreboardapi.scoreboard.bukkit.compat."+version+".ScoreboardHandler");
+                clazz = Class.forName("mc.alk.scoreboardapi.scoreboard.bukkit.compat." +
+                        version + ".ScoreboardHandler");
                 Class<?>[] args = {};
                 handler = (IScoreboardHandler) clazz.getConstructor(args)
                         .newInstance((Object[]) args);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             handler = IScoreboardHandler.BLANK_HANDLER;
-//            System.err.println(" version = " + version);
-//            e.printStackTrace();
         }
     }
 
@@ -71,8 +65,6 @@ public class BObjective extends SAPIObjective{
         super(id,displayName, criteria,priority);
         if (board != null)
             setScoreBoard(board);
-
-//        MinMaxPriorityQueue.Builder<Score> b = MinMaxPriorityQueue.orderedBy(new Comparator<Score>() {
         scores = new TreeSet<SAPIScore>(new Comparator<SAPIScore>() {
             @Override
             public int compare(SAPIScore o1, SAPIScore o2) {
@@ -82,7 +74,6 @@ public class BObjective extends SAPIObjective{
                 return o1.getEntry().getID().compareTo(o2.getEntry().getID());
             }
         });
-//        scores = b.expectedSize(16).create();
     }
 
     @Override
@@ -143,7 +134,7 @@ public class BObjective extends SAPIObjective{
     }
 
 
-    private void addScore(SAPIScore e, int points) {
+    private void addScore(final SAPIScore e, final int points) {
         scores.remove(e);
         e.setScore(points);
         scores.add(e);
@@ -156,29 +147,31 @@ public class BObjective extends SAPIObjective{
             HashSet<SEntry> now15 = new HashSet<SEntry>(SAPI.MAX_ENTRIES);
             ArrayList<SAPIScore> added = new ArrayList<SAPIScore>(2);
             Iterator<SAPIScore> iter = scores.iterator();
-            for (int i =0; i < SAPI.MAX_ENTRIES && iter.hasNext(); i++) {
+            for (int i = 0; i < SAPI.MAX_ENTRIES && iter.hasNext(); i++) {
                 SAPIScore sapiScore = iter.next();
                 now15.add(sapiScore.getEntry());
                 if (!cur15.contains(sapiScore.getEntry())) {
-                    added.add(sapiScore);}
+                    added.add(sapiScore);
+                }
             }
             cur15.removeAll(now15);
             for (SEntry se : cur15) {
                 o.getScoreboard().resetScores(se.getOfflinePlayer());
             }
             cur15 = now15;
-            if (added.isEmpty()){
-                if (cur15.contains(e.getEntry())){
-                    _setScore(e.getEntry(), points);}
+            if (added.isEmpty()) {
+                if (cur15.contains(e.getEntry())) {
+                    _setScore(e.getEntry(), points);
+                }
             } else {
-                for (SAPIScore se : added){
+                for (SAPIScore se : added) {
                     _setScore(se.getEntry(), se.getScore());
                 }
             }
         }
     }
 
-    private void _setScore(SEntry e, int points) {
+    private void _setScore(final SEntry e, final int points) {
         Score sc = o.getScore(e.getOfflinePlayer());
         if (points != 0) {
             sc.setScore(points);
@@ -188,6 +181,7 @@ public class BObjective extends SAPIObjective{
             sc.setScore(0);
         }
     }
+
 
     @Override
     public int getPoints(SEntry l) {

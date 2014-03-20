@@ -8,6 +8,8 @@ import mc.alk.scoreboardapi.scoreboard.SAPIScoreboard;
 import mc.alk.scoreboardapi.scoreboard.SAPITeam;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -24,8 +26,8 @@ public class BScoreboard extends SAPIScoreboard{
 
     HashMap<String,Scoreboard> oldBoards = new HashMap<String,Scoreboard>();
 
-    public BScoreboard(String name) {
-        super(name);
+    public BScoreboard(Plugin plugin, String name) {
+        super(plugin, name);
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         board = manager.getNewScoreboard();
     }
@@ -41,10 +43,16 @@ public class BScoreboard extends SAPIScoreboard{
     }
 
     @Override
-    public void setScoreboard(Player p) {
+    public void setScoreboard(final Player p) {
         if (p.getScoreboard() != null && !oldBoards.containsKey(p.getName()))
             oldBoards.put(p.getName(), p.getScoreboard());
-        p.setScoreboard(this.board);
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                if (oldBoards.containsKey(p.getName())) /// only set them if they havent been removed already
+                    p.setScoreboard(board);
+            }
+        }.runTask(plugin);
     }
 
     @Override
@@ -58,6 +66,10 @@ public class BScoreboard extends SAPIScoreboard{
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void transferOldScoreboards(BScoreboard oldScoreboard) {
+        this.oldBoards.putAll(oldScoreboard.oldBoards);
     }
 
     private class BoardUpdate{

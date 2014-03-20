@@ -1,7 +1,6 @@
 package mc.alk.scoreboardapi.api;
 
 import mc.alk.scoreboardapi.scoreboard.SAPIDisplaySlot;
-
 import org.bukkit.OfflinePlayer;
 
 

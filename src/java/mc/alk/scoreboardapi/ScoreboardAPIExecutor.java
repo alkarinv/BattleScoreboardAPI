@@ -1,6 +1,6 @@
 package mc.alk.scoreboardapi;
 
-import mc.alk.scoreboardapi.api.SAPIFactory;
+import mc.alk.scoreboardapi.api.SAPI;
 import mc.alk.scoreboardapi.api.SEntry;
 import mc.alk.scoreboardapi.api.SObjective;
 import mc.alk.scoreboardapi.api.SScoreboard;
@@ -16,9 +16,8 @@ public class ScoreboardAPIExecutor extends BaseExecutor {
 	@MCCommand(cmds={"createScoreboard","cs"}, op=true)
 	public boolean createScoreboard(CommandSender sender, String scoreboardName) {
 		if (sh.bs == null) {
-            SScoreboard s = SAPIFactory.createScoreboard(scoreboardName);
+            SScoreboard s = SAPI.createScoreboard(ScoreboardAPI.getSelf(), scoreboardName);
             sh.addScoreboard(s);
-
         }
         return sendMessage(sender,"Added scoreboard");
 	}
