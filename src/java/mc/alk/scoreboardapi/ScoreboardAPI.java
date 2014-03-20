@@ -1,6 +1,6 @@
 package mc.alk.scoreboardapi;
 
-import mc.alk.scoreboardapi.api.SAPI;
+import mc.alk.scoreboardapi.api.SAPIFactory;
 import mc.alk.scoreboardapi.api.SScoreboard;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,11 +21,11 @@ public class ScoreboardAPI extends JavaPlugin{
 	}
 
     public static SScoreboard createScoreboard(Plugin plugin, String name) {
-        return SAPI.createScoreboard(plugin, name);
+        return SAPIFactory.createScoreboard(plugin, name);
     }
 
     public static SScoreboard createSAPIScoreboard(Plugin plugin, String name) {
-        return SAPI.createSAPIScoreboard(plugin, name);
+        return SAPIFactory.createSAPIScoreboard(plugin, name);
     }
 
     public static ScoreboardAPI getSelf() {
