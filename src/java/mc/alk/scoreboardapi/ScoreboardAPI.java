@@ -17,7 +17,7 @@ public class ScoreboardAPI extends JavaPlugin{
 
 	@Override
 	public void onDisable() {
-
+        /* do nothing */
 	}
 
     public static SScoreboard createScoreboard(Plugin plugin, String name) {

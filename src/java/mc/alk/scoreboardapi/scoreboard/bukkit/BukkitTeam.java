@@ -10,7 +10,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.Collection;
 import java.util.Set;
 
-public class BukkitTeam extends SAPITeam {
+class BukkitTeam extends SAPITeam {
 	Team team;
 
 	public BukkitTeam(BScoreboard board, Team team) {
