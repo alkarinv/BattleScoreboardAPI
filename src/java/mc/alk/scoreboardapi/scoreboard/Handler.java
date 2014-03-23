@@ -73,9 +73,13 @@ public class Handler {
 		return e == null || !(e instanceof STeam) ? null : (STeam) e;
 	}
 
-	public boolean contains(String id) {
-		return idmap.containsKey(id) && row.containsKey(idmap.get(id));
-	}
+    public boolean contains(String id) {
+        return idmap.containsKey(id) && row.containsKey(idmap.get(id));
+    }
+
+    public boolean contains(OfflinePlayer p) {
+        return idmap.containsKey(p.getName()) && row.containsKey(idmap.get(p.getName()));
+    }
 
 	public SEntry getEntry(OfflinePlayer p) {
 		return (!idmap.containsKey(p.getName())) ? null : row.get(idmap.get(p.getName()));

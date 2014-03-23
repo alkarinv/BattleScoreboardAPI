@@ -58,8 +58,9 @@ public class BScoreboard extends SAPIScoreboard{
     @Override
     public void removeScoreboard(Player player) {
         try {
-            if (oldBoards.containsKey(player.getName())){
-                player.setScoreboard(oldBoards.remove(player.getName()));
+            Scoreboard b = oldBoards.remove(player.getName());
+            if (b != null){
+                player.setScoreboard(b);
             } else {
                 player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             }
@@ -164,5 +165,10 @@ public class BScoreboard extends SAPIScoreboard{
         for (SEntry entry : handler.getEntries()){
             objective.addEntry(entry, 0);
         }
+    }
+
+    @Override
+    public boolean hasThisScoreboard(Player player) {
+        return board!=null && player.getScoreboard() != null && player.getScoreboard().equals(board);
     }
 }

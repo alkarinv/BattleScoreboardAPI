@@ -244,4 +244,9 @@ public class SAPIScoreboard implements SScoreboard{
         return plugin;
     }
 
+    @Override
+    public boolean hasThisScoreboard(Player player) {
+        return handler.contains(player);
+    }
+
 }

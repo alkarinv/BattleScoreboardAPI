@@ -70,4 +70,6 @@ public interface SScoreboard {
     void setEntryNameSuffix(SEntry entry, String name);
 
     public Plugin getPlugin();
+
+    boolean hasThisScoreboard(Player player);
 }
