@@ -20,7 +20,13 @@ public class SAPITeam extends SAPIEntry implements STeam{
 		this.board.createEntry(p);
 	}
 
-	@Override
+    @Override
+    public void addPlayer(OfflinePlayer p, int defaultPoints) {
+        this.board.createEntry(p);
+        /// no points currently for sapiteams
+    }
+
+    @Override
 	public void addPlayers(Collection<? extends OfflinePlayer> players) {
 		for (OfflinePlayer p: players){
 			addPlayer(p);

@@ -8,6 +8,7 @@ import mc.alk.scoreboardapi.api.SScoreboard;
 import mc.alk.scoreboardapi.api.STeam;
 import org.bukkit.OfflinePlayer;
 
+import java.util.List;
 import java.util.TreeMap;
 
 public class SAPIObjective implements SObjective{
@@ -210,11 +211,11 @@ public class SAPIObjective implements SObjective{
         return e;
     }
 
-    final SAPIScore getOrCreateSAPIScore(SEntry e){
+    protected final SAPIScore getOrCreateSAPIScore(SEntry e){
         return getOrCreateSAPIScore(e,0);
     }
 
-    final SAPIScore getOrCreateSAPIScore(SEntry e, int points){
+    protected final SAPIScore getOrCreateSAPIScore(SEntry e, int points){
         if (entries.containsKey(e))
             return entries.get(e);
         SAPIScore o = new SAPIScore(e, points);
@@ -290,6 +291,11 @@ public class SAPIObjective implements SObjective{
     @Override
     public boolean contains(SEntry e) {
         return entries.containsKey(e);
+    }
+
+    @Override
+    public void initPoints(List<SEntry> entries, List<Integer> points) {
+        //todo
     }
 
     protected void _setDisplayName() {

@@ -12,7 +12,6 @@ import org.bukkit.plugin.Plugin;
  */
 public class SAPIFactory {
 
-
     private static boolean hasBukkitScoreboard = false;
 
     static{
@@ -78,4 +77,5 @@ public class SAPIFactory {
         }
         ((BScoreboard)newScoreboard).transferOldScoreboards((BScoreboard)oldScoreboard);
     }
+
 }

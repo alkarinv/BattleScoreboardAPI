@@ -1,12 +1,12 @@
-package mc.alk.scoreboardapi.scoreboard.bukkit.compat.v1_7_R1;
+package mc.alk.scoreboardapi.scoreboard.bukkit.compat.v1_7_R2;
 
 import mc.alk.scoreboardapi.api.STeam;
 import mc.alk.scoreboardapi.scoreboard.bukkit.compat.IScoreboardHandler;
-import net.minecraft.server.v1_7_R1.PacketPlayOutScoreboardObjective;
-import net.minecraft.server.v1_7_R1.ScoreboardObjective;
+import net.minecraft.server.v1_7_R2.PacketPlayOutScoreboardObjective;
+import net.minecraft.server.v1_7_R2.ScoreboardObjective;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_7_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 

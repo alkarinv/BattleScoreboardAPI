@@ -20,4 +20,5 @@ public class SAPI {
     public static boolean hasBukkitScoreboard() {
         return SAPIFactory.hasBukkitScoreboard();
     }
+
 }

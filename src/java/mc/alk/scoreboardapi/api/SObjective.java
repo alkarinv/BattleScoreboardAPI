@@ -3,6 +3,8 @@ package mc.alk.scoreboardapi.api;
 import mc.alk.scoreboardapi.scoreboard.SAPIDisplaySlot;
 import org.bukkit.OfflinePlayer;
 
+import java.util.List;
+
 
 public interface SObjective {
     /**
@@ -94,4 +96,6 @@ public interface SObjective {
 	public SScoreboard getScoreboard();
 
 	public boolean contains(SEntry e);
+
+    void initPoints(List<SEntry> entries, List<Integer> points);
 }

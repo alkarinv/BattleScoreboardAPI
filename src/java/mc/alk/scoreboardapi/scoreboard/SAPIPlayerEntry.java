@@ -1,35 +1,42 @@
 package mc.alk.scoreboardapi.scoreboard;
 
 import mc.alk.scoreboardapi.api.SEntry;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 public class SAPIPlayerEntry implements SEntry, Comparable<SEntry>{
-	OfflinePlayer p;
+	OfflinePlayer idOfflinePlayer;
     private String displayName;
     private String displayNameSuffix;
     private String displayNamePrefix;
     private String combinedDisplayName;
+    OfflinePlayer displayOfflinePlayer;
 
 
     public SAPIPlayerEntry(OfflinePlayer p){
-		this.p = p;
+		this.idOfflinePlayer = p;
 		setDisplayName(p.getName());
-	}
+        if (combinedDisplayName != null && p.getName() != null && p.getName().equals(combinedDisplayName)) {
+            displayOfflinePlayer = p;}
+    }
 
 	public SAPIPlayerEntry(OfflinePlayer p, String display) {
-		this.p = p;
+		this.idOfflinePlayer = p;
 		setDisplayName(display);
+        if (combinedDisplayName != null && p.getName() != null && p.getName().equals(combinedDisplayName)) {
+            displayOfflinePlayer = p;}
 	}
 
-	public OfflinePlayer getOfflinePlayer() {
-		return Bukkit.getOfflinePlayer(combinedDisplayName);
+	@Override
+    public OfflinePlayer getOfflinePlayer() {
+        if (displayOfflinePlayer == null) {
+            displayOfflinePlayer = Bukkit.getOfflinePlayer(combinedDisplayName);}
+        return displayOfflinePlayer ;
 	}
 
     @Override
 	public String getID() {
-		return p.getName();
+		return idOfflinePlayer.getName();
 	}
 
     @Override
@@ -86,6 +93,7 @@ public class SAPIPlayerEntry implements SEntry, Comparable<SEntry>{
             this.combinedDisplayName = (displayNamePrefix != null ? displayNamePrefix : "")+
                     displayName + (displayNameSuffix != null ? displayNameSuffix : "");
         }
+        displayOfflinePlayer = null;
     }
 
     @Override

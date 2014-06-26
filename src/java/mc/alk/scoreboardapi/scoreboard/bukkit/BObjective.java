@@ -1,5 +1,6 @@
 package mc.alk.scoreboardapi.scoreboard.bukkit;
 
+import mc.alk.scoreboardapi.Log;
 import mc.alk.scoreboardapi.SAPIUtil;
 import mc.alk.scoreboardapi.api.SAPI;
 import mc.alk.scoreboardapi.api.SEntry;
@@ -106,7 +107,6 @@ public class BObjective extends SAPIObjective{
         if (o == null)
             return;
         o.setDisplayName(getDisplayName());
-
     }
 
     @Override
@@ -119,6 +119,33 @@ public class BObjective extends SAPIObjective{
         if (o == null)
             o = ((BScoreboard)board).board.registerNewObjective(id,criteria);
         setDisplayName(getDisplayName());
+    }
+
+    public static void t(){
+        Log.debug(":");
+    }
+
+    @Override
+    public void initPoints(List<SEntry> _entries, List<Integer> points) {
+        for (int i=0;i<_entries.size();i++) {
+            SEntry e = _entries.get(i);
+//            if (entries.containsKey(e)) {
+////                return entries.get(e);
+//                //todo set points
+//                continue;
+//            }
+            int point = points.get(i);
+            SAPIScore o = new SAPIScore(e, point);
+            entries.put(e, o);
+//            _setScore(e, point);
+            scores.add(o);
+        }
+        int i = 0;
+        Iterator<SAPIScore> iter = scores.iterator();
+        while(iter.hasNext() && i++ < 16) {
+            SAPIScore sc = iter.next();
+            _setScore(sc.getEntry(), sc.getScore());
+        }
     }
 
     @Override
@@ -169,6 +196,7 @@ public class BObjective extends SAPIObjective{
                 }
             }
         }
+
     }
 
     private void _setScore(final SEntry e, final int points) {
@@ -214,6 +242,7 @@ public class BObjective extends SAPIObjective{
         displayTeams = display;
         setDisplay();
     }
+
 
     private void setDisplay() {
         scores.clear();

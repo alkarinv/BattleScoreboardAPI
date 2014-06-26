@@ -36,22 +36,28 @@ class BukkitTeam extends SAPITeam {
 			}
 		}
 	}
+    @Override
+    public void addPlayer(OfflinePlayer p) {
+        addPlayer(p, 0);
+    }
 
-	@Override
-	public void addPlayer(OfflinePlayer p) {
-		super.addPlayer(p);
-		team.addPlayer(p);
-		if (board != null){
-			for (SObjective o : board.getObjectives()){
-				if (o.isDisplayPlayers() && o.contains(this)) {
+    @Override
+    public void addPlayer(OfflinePlayer p, int defaultPoints) {
+        super.addPlayer(p,defaultPoints);
+
+        team.addPlayer(p); /// Note: no spigot speed problems
+        if (board != null && defaultPoints != Integer.MIN_VALUE){
+            for (SObjective o : board.getObjectives()){
+                if (o.isDisplayPlayers() && o.contains(this)) {
                     SEntry e = o.getScoreboard().getEntry(p);
                     if (o.getPoints(e) == -1){
                         o.addEntry(p, 0);
                     }
                 }
             }
-		}
-	}
+        }
+    }
+
 
 	@Override
 	public void removePlayer(OfflinePlayer p){

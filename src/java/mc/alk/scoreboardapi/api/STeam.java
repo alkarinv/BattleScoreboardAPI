@@ -8,7 +8,9 @@ import java.util.Set;
 public interface STeam extends SEntry {
 	public void addPlayer(OfflinePlayer p);
 
-	public void addPlayers(Collection<? extends OfflinePlayer> players);
+    public void addPlayer(OfflinePlayer p, int defaultPoints);
+
+    public void addPlayers(Collection<? extends OfflinePlayer> players);
 
 	public void removePlayer(OfflinePlayer p);
 

@@ -12,19 +12,25 @@ public class SAPIEntry implements SEntry, Comparable<SEntry>{
     private String displayNameSuffix;
     private String displayNamePrefix;
     private String combinedDisplayName;
+    /// Note : Spigots "getOfflinePlayer(...)" seems to be extremely slow, so cache it if possible
+    protected OfflinePlayer offlinePlayer;
 
-	public SAPIEntry(String id, String displayName){
+    public SAPIEntry(String id, String displayName){
 		this.id = id;
         setDisplayName(displayName);
 	}
 
 	@Override
     public OfflinePlayer getOfflinePlayer() {
-		return Bukkit.getOfflinePlayer(combinedDisplayName);
+        if (offlinePlayer == null) {
+            offlinePlayer = Bukkit.getOfflinePlayer(combinedDisplayName);}
+        return offlinePlayer;
 	}
 
 	public OfflinePlayer getPlayerListName(){
-		return Bukkit.getOfflinePlayer(combinedDisplayName);
+        if (offlinePlayer == null) {
+            offlinePlayer = Bukkit.getOfflinePlayer(combinedDisplayName);}
+		return offlinePlayer;
 	}
 
     @Override
@@ -76,9 +82,10 @@ public class SAPIEntry implements SEntry, Comparable<SEntry>{
         return displayNamePrefix;
     }
 
-    protected void _setDisplayName() {
+    private void _setDisplayName() {
         this.combinedDisplayName = SAPIUtil.createLimitedString(displayNamePrefix, displayName,
                 displayNameSuffix, SAPI.MAX_NAMESIZE);
+        offlinePlayer = null;
     }
 
     public String toString() {

@@ -128,10 +128,10 @@ public class BScoreboard extends SAPIScoreboard{
 
     @Override
     public SEntry removeEntry(SEntry e) {
-        board.resetScores(e.getOfflinePlayer());
+        board.resetScores(e.getOfflinePlayer()); /// Note: slow spigot operation
         Team t = board.getPlayerTeam(e.getOfflinePlayer());
         if (t != null) {
-            t.removePlayer(e.getOfflinePlayer());}
+            t.removePlayer(e.getOfflinePlayer());} /// Note: slow spigot operation
         return super.removeEntry(e);
     }
 

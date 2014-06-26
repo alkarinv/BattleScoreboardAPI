@@ -20,15 +20,14 @@ public class Handler {
 	}
 
 	public SEntry getOrCreateEntry(OfflinePlayer p, String displayName) {
-		if (!contains(p.getName())){
+        SEntry e = getEntry(p);
+        if (e == null){
 			Integer realid = ids++;
 			idmap.put(p.getName(), realid);
-			SEntry l = new SAPIPlayerEntry(p,displayName);
-			row.put(realid, l);
-			return l;
-		} else {
-			return getEntry(p.getName());
+			e = new SAPIPlayerEntry(p,displayName);
+			row.put(realid, e);
 		}
+        return e;
 	}
 
 	public void registerEntry(SEntry entry){
