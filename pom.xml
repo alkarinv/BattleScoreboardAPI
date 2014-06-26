@@ -24,12 +24,12 @@
     <!-- Dependencies -->
     <dependencies>
         <!-- Dependencies that have maven repos -->
-        <dependency>
+<!--        <dependency>
             <groupId>mc.alk</groupId>
             <artifactId>BattleProfiler</artifactId>
             <version>1.0</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
